@@ -1,6 +1,6 @@
 {
   "name": "gulp-log-capture",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "captures logs from gulp tasks",
   "main": "log-capture.js",
   "scripts": {
