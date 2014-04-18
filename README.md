@@ -3,6 +3,12 @@ Log Capture Plugin for Gulp
 
 capture logs from any other gulp plugin in the pipe.
 
+##Installation
+
+´´´
+npm install gulp-log-capture --save-dev
+´´´
+
 ##Example
 
 capturing the call to `console.log` from jshint to create a XML report:
