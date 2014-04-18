@@ -11,7 +11,7 @@
     "url": "git://github.com/sloosch/gulp-log-capture.git"
   },
   "keywords": [
-    "gulpfriendly",
+    "gulpplugin",
     "log"
   ],
   "author": "sloosch",
