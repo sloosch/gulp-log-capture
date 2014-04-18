@@ -8,6 +8,8 @@ capture logs for any other gulp plugin in the pipe.
 capturing the call to `console.log` from jshint to create a XML report:
 
 ```javascript
+logCapture = require('gulp-log-capture');
+
 gulp.task('lint-reports', function() {
 	return gulp.src('src/js/*.js')
 	.pipe(jshint())
