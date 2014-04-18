@@ -5,9 +5,9 @@ capture logs from any other gulp plugin in the pipe.
 
 ##Installation
 
-´´´
+```
 npm install gulp-log-capture --save-dev
-´´´
+```
 
 ##Example
 
