@@ -84,6 +84,7 @@ var endCapturing = function() {
 };
 
 var capturingTask = null;
+
 var start = function(obj, fnName) {
 	var callingTask = stacktrace()[1].getFunction();
 	if(capturingTask !== null && callingTask !== capturingTask) {
