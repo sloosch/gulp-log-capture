@@ -105,8 +105,8 @@ var stop =  function(extension) {
 		var fileName = nameWithoutExtension(file.path);
 		for(var i = 0; i < buffers.length; i++) {
 			var logFiles = buffers[i].createLogFilesForFile(file, extension);
-			for(var i = 0; i < logFiles.length; i++) {
-				this.push(logFiles[i]);
+			for(var j = 0; j < logFiles.length; j++) {
+				this.push(logFiles[j]);
 			}
 		}
 		endCapturing();

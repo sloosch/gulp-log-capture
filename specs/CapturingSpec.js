@@ -29,14 +29,29 @@ describe('capturing', function() {
 		firstThroughCb = sinon.spy();
 		sndThroughCb = sinon.spy();
 		throughObjStub = sinon.stub(through, 'obj');
-		throughObjStub
-		.onFirstCall().yieldsOn(firstThroughObj, testFile, 'utf-8', firstThroughCb)
-		.onSecondCall().yieldsOn(sndThroughObj, testFile, 'utf-8', sndThroughCb);
+		throughObjStub.onFirstCall().yieldsOn(firstThroughObj, testFile, 'utf-8', firstThroughCb);
+		throughObjStub.onSecondCall().yieldsOn(sndThroughObj, testFile, 'utf-8', sndThroughCb);
+		throughObjStub.yieldsOn({push : function(){}}, testFile, 'utf-8', function() {});
 	});
 	
 	afterEach(function() {
-		throughObjStub.restore();
 		logCapture.stop();
+		throughObjStub.restore();
+	});
+	
+	it('should add another buffer for a differnt logging object', function(){
+			var anotherObj = {
+				log2 : function() {}
+			}
+			logCapture.start(obj, 'log');
+			logCapture.start(anotherObj, 'log2');
+			expect(logCapture.buffers.length).to.be.equal(2);
+	});
+	
+	it('should resuse the same buffer for the same object and log function', function(){
+			logCapture.start(obj, 'log');
+			logCapture.start(obj, 'log');
+			expect(logCapture.buffers.length).to.be.equal(1);
 	});
 	
 	it('should start the capturing', function() {
