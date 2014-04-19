@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha -R spec ./specs/*",
     "devel": "./node_modules/mocha/bin/mocha -R spec -w ./specs/*",
-    "coverage" : "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./specs/*"
+    "coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./specs/*",
+    "coveralls" : "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,9 @@
   "devDependencies": {
     "mocha": "~1.18.2",
     "chai": "~1.9.1",
-    "sinon": "~1.9.1"
+    "sinon": "~1.9.1",
+    "istanbul": "~0.2.7",
+    "coveralls": "~2.10.0",
+    "mocha-lcov-reporter": "0.0.1"
   }
 }
