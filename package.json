@@ -18,7 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "through2": "~0.4.1",
-    "stack-trace": "0.0.9"
+    "stack-trace": "0.0.9",
+    "gulp-util": "~2.2.14"
   },
   "devDependencies": {
     "mocha": "~1.18.2",
