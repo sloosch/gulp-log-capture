@@ -1,7 +1,7 @@
 {
   "name": "gulp-log-capture",
-  "version": "0.0.2",
-  "description": "captures logs from gulp tasks",
+  "version": "0.0.3",
+  "description": "captures logs from any other gulp plugin in the pipe",
   "main": "log-capture.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./specs/*"
