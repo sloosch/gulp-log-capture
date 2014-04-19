@@ -1,6 +1,6 @@
 {
   "name": "gulp-log-capture",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "captures logs from any other gulp plugin in the pipe",
   "main": "log-capture.js",
   "scripts": {
