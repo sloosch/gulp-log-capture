@@ -115,5 +115,6 @@ var stop =  function(extension) {
 
 module.exports = {
 	start : start,
-	stop : stop
+	stop : stop,
+	LogBuffer : LogBuffer
 };
