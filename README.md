@@ -1,4 +1,4 @@
-Log Capture Plugin for Gulp [![Build Status](https://travis-ci.org/sloosch/gulp-log-capture.svg?branch=master)](https://travis-ci.org/sloosch/gulp-log-capture)
+Log Capture Plugin for Gulp [![Build Status](https://travis-ci.org/sloosch/gulp-log-capture.svg?branch=master)](https://travis-ci.org/sloosch/gulp-log-capture) [![Coverage Status](https://coveralls.io/repos/sloosch/gulp-log-capture/badge.png?branch=master)](https://coveralls.io/r/sloosch/gulp-log-capture?branch=master)
 =========
 
 capture logs from any other gulp plugin in the pipe.
