@@ -4,10 +4,12 @@ var logCapture = require('../log-capture');
 var File = require('gulp-util').File;
 var path = require('path');
 
+
 describe('Log buffer', function() {
 	var obj;
 	var buffer;
 	var originalLog;
+
 	
 	beforeEach(function() {
 		originalLog = sinon.spy();
@@ -20,6 +22,7 @@ describe('Log buffer', function() {
 	
 	afterEach(function() {
 		buffer.revert();
+		logCapture.stop();
 	});
 	
 	it('should monkey patch the logging function', function() {
@@ -35,6 +38,12 @@ describe('Log buffer', function() {
 	it('should store the log in its buffer and knows the caller', function() {
 		obj.log('test');
 		expect(buffer.data.spy).to.be.equal('test');
+	});
+	
+	it('should append data to an existing buffer', function() {
+		obj.log('test');
+		obj.log('test');
+		expect(buffer.data.spy).to.be.equal('testtest');
 	});
 	
 	it('should restore the logging function to its original function', function() {

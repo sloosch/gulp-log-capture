@@ -58,7 +58,7 @@ var buffers = [];
 
 var bufferForObj = function(obj, fnName) {
 	var buffer = null;
-	for(var i = 0; i < buffers.length && buffers === null; i++) {
+	for(var i = 0; i < buffers.length && buffer === null; i++) {
 		if(buffers[i].hasObj(obj,fnName)) {
 			buffer = buffers[i];
 		}
@@ -80,7 +80,7 @@ var endCapturing = function() {
 	for(var i = 0; i < buffers.length; i++) {
 		buffers[i].revert();
 	}
-	buffers = [];
+	buffers.length = 0;
 };
 
 var capturingTask = null;
@@ -100,6 +100,7 @@ var start = function(obj, fnName) {
 };
 
 var stop =  function(extension) {
+	capturingTask = null;
 	return through.obj(function(file, enc, cb) {
 		var fileName = nameWithoutExtension(file.path);
 		for(var i = 0; i < buffers.length; i++) {
@@ -109,7 +110,6 @@ var stop =  function(extension) {
 			}
 		}
 		endCapturing();
-		capturingTask = null;
 		cb();
 	});
 };
@@ -117,5 +117,6 @@ var stop =  function(extension) {
 module.exports = {
 	start : start,
 	stop : stop,
-	LogBuffer : LogBuffer
+	LogBuffer : LogBuffer,
+	buffers : buffers
 };
