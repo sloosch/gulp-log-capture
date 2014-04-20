@@ -30,7 +30,7 @@ gulp.task('lint-reports', function() {
 
 
 ####logCapture.start(obj, fnName)
-To catch every call to `console.log` use `logCapture.start(console, 'log')` can be also used to track any other logging function as long as it can be handled by nodejs `util.format` e.g. `gulpUtil.log` can be captured via `logCapture.start(gulpUtil, 'log')`.
+To catch every call to `console.log` use `logCapture.start(console, 'log')` can be also used to track any other logging / writing function as long as it can be handled by nodejs `util.format` e.g. `process.stdout.write` can be captured via `logCapture.start(process.stdout, 'write')`.
 
 ####logCapture.stop(fileExtension)
 stops the capturing and pushes the log files through the pipe with the given file extension. The log file name pattern is `<original filename>-<filename calling obj.fnName>-<fnName>.<fileExtension>` e.g. foo.js-crazy_log_plugin-log.xml

@@ -7,30 +7,23 @@ var through = require('through2');
 
 describe('capturing', function() {
 	var throughObjStub;
-	var firstThroughObj;
-	var sndThroughObj;
-	var firstThroughCb;
-	var sndThroughCb;
+	var throughObj = [];
+	var throughCb = [];
 	var testFile;
 	var obj;
-	
+	var throughStubs = 3;
 	
 	beforeEach(function() {
 		obj = {
 			log : sinon.spy()
 		}
-		firstThroughObj = {	
-			push : sinon.spy()
-		};
-		sndThroughObj = {	
-			push : sinon.spy()
-		};
-		testFile = new File();
-		firstThroughCb = sinon.spy();
-		sndThroughCb = sinon.spy();
 		throughObjStub = sinon.stub(through, 'obj');
-		throughObjStub.onFirstCall().yieldsOn(firstThroughObj, testFile, 'utf-8', firstThroughCb);
-		throughObjStub.onSecondCall().yieldsOn(sndThroughObj, testFile, 'utf-8', sndThroughCb);
+		testFile = new File();
+		for(var i = 0; i < throughStubs; i++) {
+			throughObj.push({push : sinon.spy()});
+			throughCb.push(sinon.spy());
+			throughObjStub.onCall(i).yieldsOn(throughObj[i], testFile, 'uitf-8', throughCb[i]);
+		}
 		throughObjStub.yieldsOn({push : function(){}}, testFile, 'utf-8', function() {});
 	});
 	
@@ -48,7 +41,7 @@ describe('capturing', function() {
 			expect(logCapture.buffers.length).to.be.equal(2);
 	});
 	
-	it('should resuse the same buffer for the same object and log function', function(){
+	it('should reuse the same buffer for the same object and log function', function(){
 			logCapture.start(obj, 'log');
 			logCapture.start(obj, 'log');
 			expect(logCapture.buffers.length).to.be.equal(1);
@@ -57,8 +50,8 @@ describe('capturing', function() {
 	it('should start the capturing', function() {
 		logCapture.start(obj, 'log');
 		expect(logCapture.buffers.length).to.be.equal(1);
-		expect(firstThroughCb.called).to.be.true;
-		expect(firstThroughObj.push.calledWith(testFile)).to.be.true;
+		expect(throughCb[0].called).to.be.true;
+		expect(throughObj[0].push.calledWith(testFile)).to.be.true;
 	});
 	
 	it('should stop the capturing process', function() {
@@ -66,8 +59,8 @@ describe('capturing', function() {
 		obj.log('test');
 		logCapture.stop();
 		expect(logCapture.buffers.length).to.be.equal(0);
-		expect(sndThroughCb.called).to.be.true;
-		expect(sndThroughObj.push.called).to.be.true;
+		expect(throughCb[1].called).to.be.true;
+		expect(throughObj[1].push.called).to.be.true;
 	});
 	
 	it('should not allow concurrent capturing', function() {
@@ -80,5 +73,20 @@ describe('capturing', function() {
 		
 		a();
 		expect(b).to.throw(/Concurrent capturing is not supported/);
+	});
+	
+	it('should restore the files in the pipe prior capturing end', function() {
+		logCapture.start(obj, 'log');
+		obj.log('test');
+		logCapture.stop();
+		logCapture.restore();
+		expect(throughCb[2].called).to.be.true;
+		expect(throughObj[2].push.calledWith(testFile)).to.be.true;
+	});
+	
+	it('should not restore as long as the capturing was not stopped', function() {
+		logCapture.start(obj, 'log');
+		obj.log('test');
+		expect(logCapture.restore).to.throw(/Capturing was not stopped!/);
 	});
 });

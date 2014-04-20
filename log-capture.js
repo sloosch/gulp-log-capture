@@ -32,7 +32,7 @@ LogBuffer.prototype = {
 			this.data[name] = '';
 		}
 		this.data[name] += utilFmt.apply(utilFmt, arguments);
-		this.original.apply(this.original, arguments);
+		this.original.apply(this.obj, arguments);
 	},
 	
 	createLogFilesForFile : function(file, desiredExtension) {
@@ -81,9 +81,11 @@ var endCapturing = function() {
 		buffers[i].revert();
 	}
 	buffers.length = 0;
+	capturingTask = null;
 };
 
 var capturingTask = null;
+var lastFile = null;
 
 var start = function(obj, fnName) {
 	var callingTask = stacktrace()[1].getFunction();
@@ -93,15 +95,16 @@ var start = function(obj, fnName) {
 	}
 	capturingTask = callingTask;
 	return through.obj(function(file, enc, cb) {
+		lastFile = null;
 		startCapturing(obj, fnName);
 		this.push(file);
 		cb();
 	});
 };
 
-var stop =  function(extension) {
-	capturingTask = null;
+var stop = function(extension) {
 	return through.obj(function(file, enc, cb) {
+		lastFile = file;
 		var fileName = nameWithoutExtension(file.path);
 		for(var i = 0; i < buffers.length; i++) {
 			var logFiles = buffers[i].createLogFilesForFile(file, extension);
@@ -114,9 +117,21 @@ var stop =  function(extension) {
 	});
 };
 
+var restore = function() {
+	return through.obj(function(file, enc, cb) {
+		if(lastFile === null) {
+			throw new PluginError('gulp-log-capture', 'Capturing was not stopped!');
+		}
+		this.push(lastFile);
+		lastFile = null;
+		cb();
+	});
+};
+
 module.exports = {
 	start : start,
 	stop : stop,
+	restore : restore,
 	LogBuffer : LogBuffer,
 	buffers : buffers
 };
