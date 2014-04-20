@@ -35,5 +35,7 @@ To catch every call to `console.log` use `logCapture.start(console, 'log')` can 
 ####logCapture.stop(fileExtension)
 stops the capturing and pushes the log files through the pipe with the given file extension. The log file name pattern is `<original filename>-<filename calling obj.fnName>-<fnName>.<fileExtension>` e.g. foo.js-crazy_log_plugin-log.xml
 
+####logCapture.restore()
+restores the stream to the state before the capturing was stopped.
 
 #####Note: Concurrent capturing is not supported! Therefore you should not run the task with others simultaneously.
